@@ -1155,7 +1155,7 @@ int tinyfd_notifyPopupW(
         size_t lDialogStringLen;
 
         if (aTitle && !wcscmp(aTitle, L"tinyfd_query")) { strcpy(tinyfd_response, "windows_wchar"); return 1; }
-        
+
         if (quoteDetectedW(aTitle)) return tinyfd_notifyPopupW(L"INVALID TITLE WITH QUOTES", aMessage, aIconType);
 		if (quoteDetectedW(aMessage)) return tinyfd_notifyPopupW(aTitle, L"INVALID MESSAGE WITH QUOTES", aIconType);
 
@@ -3974,6 +3974,7 @@ static int osx9orBetter(void)
         {
                 lOsx9orBetter = 0 ;
                 lIn = popen( "osascript -e 'set osver to system version of (system info)'" , "r" ) ;
+                V = 0 ;
                 if ( ( fgets( lBuff , sizeof( lBuff ) , lIn ) != NULL )
                         && ( 2 == sscanf(lBuff, "%d.%d", &V, &v) ) )
                 {
@@ -6611,7 +6612,7 @@ char * tinyfd_openFileDialog(
                 {
                         strcat( lDialogString , " --multiple" ) ;
                 }
-                
+
                 strcat(lDialogString, " --title=\"") ;
                 if (aTitle && strlen(aTitle)) strcat(lDialogString, aTitle) ;
                 strcat(lDialogString, "\"") ;
