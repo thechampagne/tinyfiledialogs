@@ -5520,7 +5520,7 @@ char * tinyfd_inputBox(
                 if (aMessage && strlen(aMessage)) strcat(lDialogString, aMessage) ;
                 strcat(lDialogString, "\"") ;
 
-                if ( aDefaultInput && strlen(aDefaultInput) )
+                if ( aDefaultInput )
                 {
                         strcat(lDialogString, " --entry-text=\"") ;
                         strcat(lDialogString, aDefaultInput) ;
