@@ -45,11 +45,11 @@
 
 		! calling function tinyfd_inputbox
 		write(*,'(A)') "Enter tinyfd_inputbox()"
-		atitle = "a Title"
-		amessage = "a Message"
-		adefaultinput = "an Input"
+		atitle = "a Title" // char(0)
+		amessage = "a Message" // char(0)
+		adefaultinput = "an Input" // char(0)
 		! Get C pointer
-		cpointer = tinyfd_inputbox(trim(atitle), trim(amessage), trim(adefaultinput) )
+		cpointer = tinyfd_inputbox(atitle, amessage, adefaultinput )
 		! Convert C into Fortran pointer
 		call c_f_pointer(cpointer, fpointer)
 		! Remove NULL character at the end
