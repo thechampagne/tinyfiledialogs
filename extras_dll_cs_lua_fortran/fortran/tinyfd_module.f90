@@ -21,7 +21,7 @@
 ! 3. This notice may not be removed or altered from any source distribution.
 
 
-	module tinyfd_module
+	module tinyfd
 		interface ! C interface
 
 			! it doesn't return anything -> it's a subroutine
@@ -86,5 +86,5 @@
 			end function tinyfd_colorChooser
 
 		end interface ! C interface
-	end module tinyfd_module
+	end module tinyfd
 

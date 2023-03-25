@@ -23,16 +23,16 @@
 
 ! gcc -c tinyfiledialogs.c
 ! gfortran -c tinyfd_module.f90 tinyfd_main.f90
-! gfortran -o tinyfd_main_exe tinyfd_module.o foo.o tinyfd_main.o
+! gfortran -o tinyfd_exe tinyfd_module.o foo.o tinyfd_main.o
 
-! or in one line :  gfortran -o tinyfd_main_exe tinyfd_module.f90 tinyfiledialogs.c tinyfd_main.f90
+! or in one line :  gfortran -o tinyfd_exe tinyfd_module.f90 tinyfiledialogs.c tinyfd_main.f90
 
-! for tinyfiledialogs, On windows, to link with the windows libraries,
+! On windows, to link with the windows libraries,
 ! you must add: -lcomdlg32 -lole32
 ! and maybe: -luser32.lib -lshell32.lib
 
 	program main
-		use tinyfd_module
+		use tinyfd
 		use iso_c_binding, only: C_PTR, C_NULL_CHAR, c_f_pointer, c_null_ptr
 		implicit none
 		type(C_PTR) :: cpointer
