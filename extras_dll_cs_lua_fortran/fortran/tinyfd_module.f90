@@ -49,7 +49,10 @@
 			type(c_ptr) function tinyfd_inputBox(aTitle, aMessage, aDefaultInput) bind(c,NAME='tinyfd_inputBox')
 				use iso_c_binding, only: c_ptr, c_char
 				implicit none
-				character (kind=c_char, len=1) :: aTitle, aMessage, aDefaultInput
+				character (kind=c_char, len=1) :: aTitle, aMessage
+				! aDefaultInput is a bit different because we need to be able
+				! to pass c_null_ptr to obtain a password box instead of an input box
+				type(c_ptr), value :: aDefaultInput
 			end function tinyfd_inputBox
 
 			! it returns one value -> it's a function

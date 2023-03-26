@@ -33,11 +33,12 @@
 
 	program main
 		use tinyfd
-		use iso_c_binding, only: C_PTR, C_NULL_CHAR, c_f_pointer, c_null_ptr
+		use iso_c_binding, only: c_ptr, c_null_char, c_f_pointer, c_loc, c_null_ptr, c_associated
 		implicit none
-		type(C_PTR) :: cpointer
+		type(c_ptr) :: cpointer
 		character(128), pointer :: fpointer
-		character(128) :: string, atitle, amessage, adefaultinput
+		character(128) :: string, atitle, amessage	
+		character(128), target :: adefaultinput
 
 		! calling subroutine tinyfd_beep
 		write(*,'(A)') "Enter tinyfd_beep()"
@@ -48,12 +49,19 @@
 		atitle = "a Title" // char(0)
 		amessage = "a Message" // char(0)
 		adefaultinput = "an Input" // char(0)
+
 		! Get C pointer
-		cpointer = tinyfd_inputbox(atitle, amessage, adefaultinput )
-		! Convert C into Fortran pointer
-		call c_f_pointer(cpointer, fpointer)
-		! Remove NULL character at the end
-		string = fpointer(1:index(fpointer,C_NULL_CHAR)-1)
-		write (*,'(A)') trim(string)
+		cpointer = tinyfd_inputbox(atitle, amessage, c_loc(adefaultinput) )
+		! or for a password box:
+		!cpointer = tinyfd_inputbox(atitle, amessage, c_null_ptr )
+
+		if ( c_associated(cpointer) ) then
+			! Convert C into Fortran pointer
+			call c_f_pointer(cpointer, fpointer)
+			! Remove NULL character at the end
+			string = fpointer(1:index(fpointer,c_null_char)-1)
+			write (*,'(A)') trim(string)
+		endif
+
 	end program main
 
