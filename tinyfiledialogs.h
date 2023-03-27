@@ -91,14 +91,15 @@ extern char tinyfd_needs[]; /* info about requirements */
 extern int tinyfd_verbose; /* 0 (default) or 1 : on unix, prints the command line calls */
 extern int tinyfd_silent; /* 1 (default) or 0 : on unix, hide errors and warnings from called dialogs */
 
-/* Curses dialogs are difficult to use, on windows they are only ascii and uses the unix backslah */
+/** Curses dialogs are difficult to use and counter-intuitive.
+On windows they are only ascii but still uses the unix backslah ! **/
 extern int tinyfd_allowCursesDialogs; /* 0 (default) or 1 */
 
 extern int tinyfd_forceConsole;  /* 0 (default) or 1 */
 /* for unix & windows: 0 (graphic mode) or 1 (console mode).
 0: try to use a graphic solution, if it fails then it uses console mode.
-1: forces all dialogs into console mode even when an X server is present,
-   it can use the package dialog or dialog.exe.
+1: forces all dialogs into console mode even when an X server is present.
+   if enabled, it can use the package Dialog or dialog.exe.
    on windows it only make sense for console applications */
 
 extern int tinyfd_assumeGraphicDisplay; /* 0 (default) or 1  */
@@ -165,14 +166,14 @@ char * tinyfd_selectFolderDialog(
 
 char * tinyfd_colorChooser(
 	char const * aTitle, /* NULL or "" */
-	char const * aDefaultHexRGB, /* NULL or "#FF0000" */
+	char const * aDefaultHexRGB, /* NULL or "" or "#FF0000" */
 	unsigned char const aDefaultRGB[3] , /* unsigned char lDefaultRGB[3] = { 0 , 128 , 255 }; */
 	unsigned char aoResultRGB[3] ) ; /* unsigned char lResultRGB[3]; */
-		/* returns the hexcolor as a string "#FF0000" */
-		/* aoResultRGB also contains the result */
-		/* aDefaultRGB is used only if aDefaultHexRGB is NULL */
+		/* aDefaultRGB is used only if aDefaultHexRGB is absent */
 		/* aDefaultRGB and aoResultRGB can be the same array */
 		/* returns NULL on cancel */
+		/* returns the hexcolor as a string "#FF0000" */
+		/* aoResultRGB also contains the result */
 
 
 /************ WINDOWS ONLY SECTION ************************/

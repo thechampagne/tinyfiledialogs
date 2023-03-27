@@ -1,5 +1,5 @@
 !  _________
-! /         \ tinyfiledialogs v3.10 [Mar 25, 2023] zlib licence
+! /         \ tinyfiledialogs v3.10 [Mar 27, 2023] zlib licence
 ! |tiny file| 
 ! | dialogs | Copyright (c) 2014 - 2023 Guillaume Vareille http://ysengrin.com
 ! \____  ___/ http://tinyfiledialogs.sourceforge.net
@@ -29,38 +29,124 @@
 
 ! On windows, to link with the windows libraries,
 ! you must add: -lcomdlg32 -lole32
-! and maybe: -luser32.lib -lshell32.lib
+! and maybe: -luser32 -lshell32
 
 	program main
 		use tinyfd
-		use iso_c_binding, only: c_ptr, c_null_char, c_f_pointer, c_loc, c_null_ptr, c_associated
+		use iso_c_binding, only: c_ptr, c_null_char, c_f_pointer, c_loc, c_null_ptr, c_associated, c_int, c_char
 		implicit none
 		type(c_ptr) :: cpointer
-		character(128), pointer :: fpointer
-		character(128) :: string, atitle, amessage	
-		character(128), target :: adefaultinput
+		character(512), pointer :: fpointer
+		character(128), target :: aDefaultInput
+		character(512) :: string, aMessage, aDefaultPath, aDefaultPathAndFile
+		character(128) :: aTitle, aDialogType, aIconType
+		character(128) :: aSingleFilterDescription
+		integer :: i, aInteger, aButtonPressed, aDefaultButton, aNumOfFilterPatterns, aAllowMultipleSelects
+		character(8) :: aDefaultHexRGB
+		character(3) :: aDefaultRGB, aoResultRGB
+		type (c_ptr), dimension(:), allocatable :: aFilterPatterns
+		character(len=16,kind=c_char), allocatable, target :: lExtensions(:)
 
-		! calling subroutine tinyfd_beep
+		aTitle = "a Title" // char(0)
+		aMessage = "a Message" // char(0)
+		aIconType = "info" // char(0)
+
+		! calling subroutine tinyfd_beep (it doesn't return anything: it's a subroutine')
 		write(*,'(A)') "Enter tinyfd_beep()"
 		call tinyfd_beep()
 
+		! calling function tinyfd_notifyPopup (it returns one value: it's a function')
+		write(*,'(A)') "Enter tinyfd_notifyPopup()"
+		aInteger = tinyfd_notifyPopup(aTitle, aMessage, aIconType )
+
+		! calling function tinyfd_messageBox
+		write(*,'(A)') "Enter tinyfd_messageBox()"
+		aDialogType = "ok" // char(0)
+		aDefaultButton = 1
+		aButtonPressed = tinyfd_messageBox(aTitle, aMessage, aDialogType, aIconType, aDefaultButton )
+		write (*,*) aButtonPressed
+
 		! calling function tinyfd_inputbox
 		write(*,'(A)') "Enter tinyfd_inputbox()"
-		atitle = "a Title" // char(0)
-		amessage = "a Message" // char(0)
-		adefaultinput = "an Input" // char(0)
-
-		! Get C pointer
-		cpointer = tinyfd_inputbox(atitle, amessage, c_loc(adefaultinput) )
-		! or for a password box:
-		!cpointer = tinyfd_inputbox(atitle, amessage, c_null_ptr )
-
+		aDefaultInput = "an Input" // char(0)
+		cpointer = tinyfd_inputBox(aTitle, aMessage, c_loc(aDefaultInput) )
+		! or for a password box: cpointer = tinyfd_inputbox(atitle, amessage, c_null_ptr )
 		if ( c_associated(cpointer) ) then
-			! Convert C into Fortran pointer
-			call c_f_pointer(cpointer, fpointer)
-			! Remove NULL character at the end
-			string = fpointer(1:index(fpointer,c_null_char)-1)
-			write (*,'(A)') trim(string)
+			call c_f_pointer(cpointer, fpointer) ! Convert C Pointer to Fortran pointer		
+			string = fpointer(1:index(fpointer,c_null_char)-1) ! Remove NULL character at the end
+			write (*,'(A)') string
+		endif
+
+		! calling function tinyfd_saveFileDialog
+		write(*,'(A)') "Enter tinyfd_saveFileDialog()"
+		aDefaultPathAndFile = "" // char(0)
+		aSingleFilterDescription = "" // char(0) ! or "Text Files" // char(0)
+		aNumOfFilterPatterns = 2
+		allocate (lExtensions( aNumOfFilterPatterns ))
+		allocate (aFilterPatterns( aNumOfFilterPatterns ))
+		lExtensions(1) = "*.txt" // char(0)
+		lExtensions(2) = "*.doc" // char(0)
+		do i = 1, aNumOfFilterPatterns, 1
+			aFilterPatterns(i) = c_loc(lExtensions(i))
+			write (*,'(A)') lExtensions(i)
+			!write (*,*) aFilterPatterns(i)
+		end do
+		cpointer = tinyfd_saveFileDialog(aTitle, aDefaultPathAndFile, aNumOfFilterPatterns, aFilterPatterns, aSingleFilterDescription)
+		deallocate (aFilterPatterns)
+		deallocate (lExtensions)
+		if ( c_associated(cpointer) ) then
+			call c_f_pointer(cpointer, fpointer) ! Convert C Pointer to Fortran pointer		
+			string = fpointer(1:index(fpointer,c_null_char)-1) ! Remove NULL character at the end
+			write (*,'(A)') string
+		endif
+
+		! calling function tinyfd_openFileDialog
+		write(*,'(A)') "Enter tinyfd_openFileDialog()"
+		aDefaultPathAndFile = "" // char(0)
+		aAllowMultipleSelects = 1
+		aSingleFilterDescription = "" // char(0) ! or "Text Files" // char(0)
+		aNumOfFilterPatterns = 2
+		allocate (lExtensions( aNumOfFilterPatterns ))
+		allocate (aFilterPatterns( aNumOfFilterPatterns ))
+		lExtensions(1) = "*.txt" // char(0)
+		lExtensions(2) = "*.doc" // char(0)
+		do i = 1, aNumOfFilterPatterns, 1
+			aFilterPatterns(i) = c_loc(lExtensions(i))
+			write (*,'(A)') lExtensions(i)
+			!write (*,*) aFilterPatterns(i)
+		end do
+		cpointer = tinyfd_openFileDialog(aTitle, aDefaultPathAndFile, aNumOfFilterPatterns, aFilterPatterns, &
+					aSingleFilterDescription, aAllowMultipleSelects)
+		deallocate (aFilterPatterns)
+		deallocate (lExtensions)
+		if ( c_associated(cpointer) ) then
+			call c_f_pointer(cpointer, fpointer) ! Convert C Pointer to Fortran pointer		
+			string = fpointer(1:index(fpointer,c_null_char)-1) ! Remove NULL character at the end
+			write (*,'(A)') string
+		endif
+
+		! calling function tinyfd_selectFolderDialog
+		write(*,'(A)') "Enter tinyfd_selectFolderDialog()"
+		aDefaultPath = "" // char(0)
+		cpointer = tinyfd_selectFolderDialog(aTitle, aDefaultPath )
+		if ( c_associated(cpointer) ) then
+			call c_f_pointer(cpointer, fpointer) ! Convert C Pointer to Fortran pointer
+			string = fpointer(1:index(fpointer,c_null_char)-1) ! Remove NULL character at the end
+			write (*,'(A)') string
+		endif
+
+		! calling function tinyfd_colorChooser
+		write(*,'(A)') "Enter tinyfd_colorChooser()"
+		aDefaultHexRGB = "" // char(0) ! or "#FF0000" // char(0)
+		aDefaultRGB = char(0) // char(0) // char(255)
+		print *, "aDefaultRGB", IACHAR(aDefaultRGB(1:1)), IACHAR(aDefaultRGB(2:2)), IACHAR(aDefaultRGB(3:3))
+		cpointer = tinyfd_colorChooser(aTitle, aDefaultHexRGB, aDefaultRGB, aoResultRGB )
+		print *, "aoResultRGB", IACHAR(aoResultRGB(1:1)), IACHAR(aoResultRGB(2:2)), IACHAR(aoResultRGB(3:3))
+		if ( c_associated(cpointer) ) then
+			call c_f_pointer(cpointer, fpointer) ! Convert C Pointer to Fortran pointer
+			string = fpointer(1:index(fpointer,c_null_char)-1) ! Remove NULL character at the end
+			write (*,'(A)') string(1:10)
+			write (*,*) string
 		endif
 
 	end program main

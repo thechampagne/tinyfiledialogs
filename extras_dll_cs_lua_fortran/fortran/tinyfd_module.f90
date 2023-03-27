@@ -1,5 +1,5 @@
 !  _________
-! /         \ tinyfiledialogs v3.10 [Mar 25, 2023] zlib licence
+! /         \ tinyfiledialogs v3.10 [Mar 27, 2023] zlib licence
 ! |tiny file| 
 ! | dialogs | Copyright (c) 2014 - 2023 Guillaume Vareille http://ysengrin.com
 ! \____  ___/ http://tinyfiledialogs.sourceforge.net
@@ -37,8 +37,7 @@
 			end function tinyfd_notifyPopup
 
 			! it returns one value -> it's a function
-			integer function tinyfd_messageBox(aTitle, aMessage, aDialogType, aIconType,	&
-					aDefaultButton) bind(c,NAME='tinyfd_messageBox')
+			integer function tinyfd_messageBox(aTitle, aMessage, aDialogType, aIconType, aDefaultButton) bind(c,NAME='tinyfd_messageBox')
 				use iso_c_binding, only: c_char, c_int
 				implicit none
 				character (kind=c_char, len=1) :: aTitle, aMessage, aDialogType, aIconType
@@ -56,21 +55,23 @@
 			end function tinyfd_inputBox
 
 			! it returns one value -> it's a function
-			type(c_ptr) function tinyfd_saveFileDialog(aTitle, aDefaultPathAndFile, aNumOfFilterPatterns,	&
-					aFilterPatterns, aSingleFilterDescription) bind(c,NAME='tinyfd_saveFileDialog')
+			type(c_ptr) function tinyfd_saveFileDialog(aTitle, aDefaultPathAndFile, aNumOfFilterPatterns, aFilterPatterns, &
+						aSingleFilterDescription) bind(c,NAME='tinyfd_saveFileDialog')
 				use iso_c_binding, only: c_ptr, c_char, c_int
 				implicit none
-				character (kind=c_char, len=1) :: aTitle, aDefaultPathAndFile, aFilterPatterns, aSingleFilterDescription
 				integer(c_int), value :: aNumOfFilterPatterns
+				character (kind=c_char, len=1) :: aTitle, aDefaultPathAndFile, aSingleFilterDescription
+				type (c_ptr), dimension(*) :: aFilterPatterns
 			end function tinyfd_saveFileDialog
 
 			! it returns one value -> it's a function
-			type(c_ptr) function tinyfd_openFileDialog(aTitle, aDefaultPathAndFile, aNumOfFilterPatterns,	&
-					aFilterPatterns, aSingleFilterDescription, aAllowMultipleSelects) bind(c,NAME='tinyfd_openFileDialog')
+			type(c_ptr) function tinyfd_openFileDialog(aTitle, aDefaultPathAndFile, aNumOfFilterPatterns, aFilterPatterns, &
+						aSingleFilterDescription, aAllowMultipleSelects) bind(c,NAME='tinyfd_openFileDialog')
 				use iso_c_binding, only: c_ptr, c_char, c_int
 				implicit none
-				character (kind=c_char, len=1) :: aTitle, aDefaultPathAndFile, aFilterPatterns, aSingleFilterDescription
 				integer(c_int), value :: aNumOfFilterPatterns, aAllowMultipleSelects
+				character (kind=c_char, len=1) :: aTitle, aDefaultPathAndFile, aSingleFilterDescription
+				type (c_ptr), dimension(*) :: aFilterPatterns
 			end function tinyfd_openFileDialog
 
 			! it returns one value -> it's a function
@@ -81,11 +82,10 @@
 			end function tinyfd_selectFolderDialog
 
 			! it returns one value -> it's a function
-			type(c_ptr) function tinyfd_colorChooser(aTitle, aDefaultHexRGB) bind(c,NAME='tinyfd_colorChooser')
+			type(c_ptr) function tinyfd_colorChooser(aTitle, aDefaultHexRGB, aDefaultRGB, aoResultRGB) bind(c,NAME='tinyfd_colorChooser')
 				use iso_c_binding, only: c_ptr, c_char, c_int
 				implicit none
-				character (kind=c_char, len=1) :: aTitle, aDefaultHexRGB
-				character(3) :: aDefaultRGB, aoResultRGB
+				character (kind=c_char, len=1) :: aTitle, aDefaultHexRGB, aDefaultRGB, aoResultRGB
 			end function tinyfd_colorChooser
 
 		end interface ! C interface

@@ -3161,13 +3161,14 @@ char * tinyfd_selectFolderDialog(
 }
 
 
+/* aDefaultRGB is used only if aDefaultHexRGB is absent */
+/* aDefaultRGB and aoResultRGB can be the same array */
+/* returns NULL on cancel */
 /* returns the hexcolor as a string "#FF0000" */
 /* aoResultRGB also contains the result */
-/* aDefaultRGB is used only if aDefaultHexRGB is NULL */
-/* aDefaultRGB and aoResultRGB can be the same array */
 char * tinyfd_colorChooser(
         char const * aTitle, /* NULL or "" */
-        char const * aDefaultHexRGB, /* NULL or "#FF0000"*/
+        char const * aDefaultHexRGB, /* NULL or "" or "#FF0000"*/
         unsigned char const aDefaultRGB[3], /* { 0 , 255 , 255 } */
         unsigned char aoResultRGB[3]) /* { 0 , 0 , 0 } */
 {
@@ -3203,7 +3204,7 @@ char * tinyfd_colorChooser(
 		if (aTitle&&!strcmp(aTitle, "tinyfd_query")){ strcpy(tinyfd_response, "basicinput"); return (char *)0; }
 	}
 
-	if (aDefaultHexRGB)
+	if (aDefaultHexRGB && (strlen(aDefaultHexRGB)==7) )
 	{
 		strncpy(lDefaultHexRGB, aDefaultHexRGB,7);
 		lDefaultHexRGB[7]='\0';
@@ -5961,8 +5962,8 @@ char * tinyfd_saveFileDialog(
     char const * aTitle , /* NULL or "" */
     char const * aDefaultPathAndFile , /* NULL or "" */
     int aNumOfFilterPatterns , /* 0 */
-    char const * const * aFilterPatterns , /* NULL or {"*.jpg","*.png"} */
-    char const * aSingleFilterDescription ) /* NULL or "image files" */
+    char const * const * aFilterPatterns , /* NULL or {"*.txt","*.doc"} */
+    char const * aSingleFilterDescription ) /* NULL or "text files" */
 {
         static char lBuff[MAX_PATH_OR_CMD] ;
         char lDialogString[MAX_PATH_OR_CMD] ;
@@ -6954,7 +6955,7 @@ frontmost of process \\\"Python\\\" to true' ''');");
 
 		lBuff = (char *)( realloc( lBuff, (strlen(lBuff)+1) * sizeof(char)));
 
-        /*printf( "lBuff3: %s\n" , lBuff ) ; */
+        /*printf( "lBuff3 [%lu]: %s\n" , strlen(lBuff) , lBuff ) ; */
 		return lBuff ;
 }
 
@@ -7258,10 +7259,11 @@ frontmost of process \\\"Python\\\" to true' ''');");
 }
 
 
+/* aDefaultRGB is used only if aDefaultHexRGB is absent */
+/* aDefaultRGB and aoResultRGB can be the same array */
+/* returns NULL on cancel */
 /* returns the hexcolor as a string "#FF0000" */
 /* aoResultRGB also contains the result */
-/* aDefaultRGB is used only if aDefaultHexRGB is NULL */
-/* aDefaultRGB and aoResultRGB can be the same array */
 char * tinyfd_colorChooser(
         char const * aTitle , /* NULL or "" */
         char const * aDefaultHexRGB , /* NULL or "#FF0000"*/
@@ -7289,17 +7291,17 @@ char * tinyfd_colorChooser(
 		if (tfd_quoteDetected(aTitle)) return tinyfd_colorChooser("INVALID TITLE WITH QUOTES", aDefaultHexRGB, aDefaultRGB, aoResultRGB);
 		if (tfd_quoteDetected(aDefaultHexRGB)) return tinyfd_colorChooser(aTitle, "INVALID DEFAULT_HEX_RGB WITH QUOTES", aDefaultRGB, aoResultRGB);
 
-		if (aDefaultHexRGB)
+		if (aDefaultHexRGB && (strlen(aDefaultHexRGB)==7) )
 		{
 			Hex2RGB(aDefaultHexRGB, lDefaultRGB);
-         strcpy(lDefaultHexRGB, aDefaultHexRGB);
+            strcpy(lDefaultHexRGB, aDefaultHexRGB);
 		}
 		else
 		{
 			lDefaultRGB[0] = aDefaultRGB[0];
 			lDefaultRGB[1] = aDefaultRGB[1];
 			lDefaultRGB[2] = aDefaultRGB[2];
-         RGB2Hex(aDefaultRGB, lDefaultHexRGB);
+            RGB2Hex(aDefaultRGB, lDefaultHexRGB);
 		}
 
         if ( osascriptPresent( ) )
