@@ -99,7 +99,7 @@ Thanks for contributions, bug corrections & thorough testing to:
 #endif
 #define LOW_MULTIPLE_FILES 32
 
-char tinyfd_version[8] = "3.9.0";
+char tinyfd_version[8] = "3.10";
 
 /******************************************************************************************************/
 /**************************************** UTF-8 on Windows ********************************************/
