@@ -47,20 +47,22 @@
 		type (c_ptr), dimension(:), allocatable :: aFilterPatterns
 		character(len=16,kind=c_char), allocatable, target :: lExtensions(:)
 
-		aTitle = "a Title" // char(0)
-		aMessage = "a Message" // char(0)
-		aIconType = "info" // char(0)
-
 		! calling subroutine tinyfd_beep (it doesn't return anything: it's a subroutine')
 		write(*,'(A)') "Enter tinyfd_beep()"
 		call tinyfd_beep()
 
 		! calling function tinyfd_notifyPopup (it returns one value: it's a function')
 		write(*,'(A)') "Enter tinyfd_notifyPopup()"
+		aTitle = "a Title" // char(0)
+		aMessage = "a Message" // char(0)
+		aIconType = "info" // char(0)
 		aInteger = tinyfd_notifyPopup(aTitle, aMessage, aIconType )
 
 		! calling function tinyfd_messageBox
 		write(*,'(A)') "Enter tinyfd_messageBox()"
+		aTitle = "a Title" // char(0)
+		aMessage = "a Message" // char(0)
+		aIconType = "info" // char(0)
 		aDialogType = "ok" // char(0)
 		aDefaultButton = 1
 		aButtonPressed = tinyfd_messageBox(aTitle, aMessage, aDialogType, aIconType, aDefaultButton )
@@ -68,6 +70,8 @@
 
 		! calling function tinyfd_inputbox
 		write(*,'(A)') "Enter tinyfd_inputbox()"
+		aTitle = "a Title" // char(0)
+		aMessage = "a Message" // char(0)
 		aDefaultInput = "an Input" // char(0)
 		cpointer = tinyfd_inputBox(aTitle, aMessage, c_loc(aDefaultInput) )
 		! or for a password box: cpointer = tinyfd_inputbox(atitle, amessage, c_null_ptr )
@@ -79,6 +83,7 @@
 
 		! calling function tinyfd_saveFileDialog
 		write(*,'(A)') "Enter tinyfd_saveFileDialog()"
+		aTitle = "a Title" // char(0)
 		aDefaultPathAndFile = "" // char(0)
 		aSingleFilterDescription = "" // char(0) ! or "Text Files" // char(0)
 		aNumOfFilterPatterns = 2
@@ -102,6 +107,7 @@
 
 		! calling function tinyfd_openFileDialog
 		write(*,'(A)') "Enter tinyfd_openFileDialog()"
+		aTitle = "a Title" // char(0)
 		aDefaultPathAndFile = "" // char(0)
 		aAllowMultipleSelects = 1
 		aSingleFilterDescription = "" // char(0) ! or "Text Files" // char(0)
@@ -127,6 +133,7 @@
 
 		! calling function tinyfd_selectFolderDialog
 		write(*,'(A)') "Enter tinyfd_selectFolderDialog()"
+		aTitle = "a Title" // char(0)
 		aDefaultPath = "" // char(0)
 		cpointer = tinyfd_selectFolderDialog(aTitle, aDefaultPath )
 		if ( c_associated(cpointer) ) then
@@ -137,6 +144,7 @@
 
 		! calling function tinyfd_colorChooser
 		write(*,'(A)') "Enter tinyfd_colorChooser()"
+		aTitle = "a Title" // char(0)
 		aDefaultHexRGB = "" // char(0) ! or "#FF0000" // char(0)
 		aDefaultRGB = char(0) // char(0) // char(255)
 		print *, "aDefaultRGB", IACHAR(aDefaultRGB(1:1)), IACHAR(aDefaultRGB(2:2)), IACHAR(aDefaultRGB(3:3))
