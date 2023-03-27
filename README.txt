@@ -1,4 +1,4 @@
-tiny file dialogs ( cross-platform C C++ ) v3.9.0 [Nov 3, 2022] zlib licence
+tiny file dialogs ( cross-platform C C++ ) v3.10 [Mar 27, 2023] zlib licence
  _________
 /         \   Tray-popup InputBox PasswordBox MessageBox Notification Beep
 |tiny file|   ColorPicker OpenFileDialog SaveFileDialog SelectFolderDialog
@@ -24,6 +24,10 @@ Bindings for LUA and C# dll, Haskell, Fortran. Included in LWJGL(java), Rust, Al
 | | |____________________________________________________________________| | |
 | |________________________________________________________________________| |
 |____________________________________________________________________________|
+         ___________________________________________________________
+        |                                                           |
+        | v3.10: NEW FORTRAN module fully implemented with examples |
+        |___________________________________________________________|
      _____________________________________________________________________
     |                                                                     |
     | my email address is at the top of the header file tinyfiledialogs.h |
