@@ -102,6 +102,7 @@
 			!write (*,*) aFilterPatterns(i)
 		end do
 		cpointer = tinyfd_saveFileDialog(aTitle, aDefaultPathAndFile, aNumOfFilterPatterns, aFilterPatterns, aSingleFilterDescription)
+		! or cpointer = tinyfd_saveFileDialog(aTitle, aDefaultPathAndFile, 0, c_null_ptr, aSingleFilterDescription)
 		deallocate (aFilterPatterns)
 		deallocate (lExtensions)
 		if ( c_associated(cpointer) ) then
@@ -128,6 +129,7 @@
 		end do
 		cpointer = tinyfd_openFileDialog(aTitle, aDefaultPathAndFile, aNumOfFilterPatterns, aFilterPatterns, &
 					aSingleFilterDescription, aAllowMultipleSelects)
+		! or cpointer = tinyfd_openFileDialog(aTitle, aDefaultPathAndFile, 0, c_null_ptr, aSingleFilterDescription, aAllowMultipleSelects)
 		deallocate (aFilterPatterns)
 		deallocate (lExtensions)
 		if ( c_associated(cpointer) ) then
