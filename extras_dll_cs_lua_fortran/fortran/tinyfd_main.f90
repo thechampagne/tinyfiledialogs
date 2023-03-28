@@ -32,9 +32,15 @@
 
 ! or in one line :  gfortran -o tinyfd_exe tinyfd_module.f90 tinyfiledialogs.c tinyfd_main.f90
 
-! On windows, to link with the windows libraries,
-! you must add: -lcomdlg32 -lole32
-! and maybe: -luser32 -lshell32
+! This works on visualstudio with intel fortran:
+! 1) Create a new empty C++ project, verify it is in configuration for X64.
+! 2) Add existing files: tinyfiledialogs.c and tinyfiledialogs.h
+! 3) Build this project. It will fail because there is no main(), but it will create tinyfiledialogs.obj
+! 4) Create a new empty Fortran project, verify it is in configuration for X64.
+! 5) Add existing file tinyfiledialogs.obj - the one that was created on 3) 
+! 6) In the properties of this fortran project, in the linker input add:
+!              comdlg32.lib ole32.lib user32.lib shell32.lib
+! 7) Build and Run. Voila !
 
 	program main
 		use tinyfd
