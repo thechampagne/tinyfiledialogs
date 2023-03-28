@@ -37,7 +37,8 @@
 ! 2) Add existing files: tinyfiledialogs.c and tinyfiledialogs.h
 ! 3) Build this project. It will fail because there is no main(), but it will create tinyfiledialogs.obj
 ! 4) Create a new empty Fortran project, verify it is in configuration for X64.
-! 5) Add existing file tinyfiledialogs.obj - the one that was created on 3) 
+! 5) Add existing file: tinyfiledialogs.obj - the one that was created on 3) 
+! 7) Add existing files: tinyfd_module.f90 and tinyfd_main.f90 
 ! 6) In the properties of this fortran project, in the linker input add:
 !              comdlg32.lib ole32.lib user32.lib shell32.lib
 ! 7) Build and Run. Voila !
