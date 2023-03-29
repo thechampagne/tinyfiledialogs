@@ -28,7 +28,7 @@
 
 ! gcc -c tinyfiledialogs.c
 ! gfortran -c tinyfd_module.f90 tinyfd_main.f90
-! gfortran -o tinyfd_exe tinyfd_module.o foo.o tinyfd_main.o
+! gfortran -o tinyfd_exe tinyfd_module.o tinyfiledialogs.o tinyfd_main.o
 
 ! or in one line :  gfortran -o tinyfd_exe tinyfd_module.f90 tinyfiledialogs.c tinyfd_main.f90
 
