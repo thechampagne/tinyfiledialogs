@@ -173,3 +173,20 @@
 
 	end program main
 
+! gcc -c tinyfiledialogs.c
+! gfortran -c tinyfd_module.f90 tinyfd_main.f90
+! gfortran -o tinyfd_exe tinyfd_module.o tinyfiledialogs.o tinyfd_main.o
+
+! or in one line :  gfortran -o tinyfd_exe tinyfd_module.f90 tinyfiledialogs.c tinyfd_main.f90
+
+! This works on VisualStudio with Intel Fortran:
+! 1) Create a new empty C/C++ project, verify the configuration is for X64.
+! 2) Add existing files: tinyfiledialogs.c and tinyfiledialogs.h
+! 3) Build this project. It will fail because there is no main(), but it will create tinyfiledialogs.obj
+! 4) Create a new empty Fortran project, verify the configuration is for X64.
+! 5) Add existing file: tinyfiledialogs.obj - the one that was created on 3) 
+! 7) Add existing files: tinyfd_module.f90 and tinyfd_main.f90 
+! 6) In the properties of this fortran project, in the linker input field, add:
+!              comdlg32.lib ole32.lib user32.lib shell32.lib
+! 7) Build and Run. Voila !
+
